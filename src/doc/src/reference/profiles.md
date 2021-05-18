@@ -93,6 +93,28 @@ once more testing has been performed, and support for DWARF is stabilized.
 [nightly channel]: ../../book/appendix-07-nightly-rust.html
 [`-C split-debuginfo` flag]: ../../rustc/codegen-options/index.html#split-debuginfo
 
+#### trim_path
+
+The `trim-path` setting controls the [`--remap-path-prefix` argument] which
+controls whether absolute paths embedded in the build output should be sanitised
+to remove diretory names and layouts specific to the local filesystem.
+
+The valid options are:
+
+* `true`: enabled
+* `false`: disabled
+
+When enabled, the following will happen:
+
+* Path to the current working directory becomes `.`
+* Path to packages outside of the current working directory becomes `[package name]@[version]`
+
+Note that this will not affect paths hard-coded in the source code, but the path
+string obtained by [`file!()`](https://doc.rust-lang.org/std/macro.file.html) will be
+subjected to the same remapping rules.
+
+[`--remap-path-prefix` argument]: ../../rustc/command-line-arguments.html#--remap-path-prefix-remap-source-names-in-output
+
 #### debug-assertions
 
 The `debug-assertions` setting controls the [`-C debug-assertions` flag] which
@@ -233,6 +255,7 @@ The default settings for the `dev` profile are:
 opt-level = 0
 debug = true
 split-debuginfo = '...'  # Platform-specific.
+trim-path = false
 debug-assertions = true
 overflow-checks = true
 lto = false
@@ -255,6 +278,7 @@ The default settings for the `release` profile are:
 opt-level = 3
 debug = false
 split-debuginfo = '...'  # Platform-specific.
+trim-path = true
 debug-assertions = false
 overflow-checks = false
 lto = false
@@ -276,6 +300,7 @@ The default settings for the `test` profile are:
 opt-level = 0
 debug = 2
 split-debuginfo = '...'  # Platform-specific.
+trim-path = false
 debug-assertions = true
 overflow-checks = true
 lto = false
@@ -297,6 +322,7 @@ The default settings for the `bench` profile are:
 opt-level = 3
 debug = false
 split-debuginfo = '...'  # Platform-specific.
+trim-path = false
 debug-assertions = false
 overflow-checks = false
 lto = false

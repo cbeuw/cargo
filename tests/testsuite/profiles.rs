@@ -212,6 +212,7 @@ fn top_level_overrides_deps() {
         -C prefer-dynamic \
         -C opt-level=1[..]\
         -C debuginfo=2 \
+        --remap-path-prefix [..] \
         -C metadata=[..] \
         --out-dir [CWD]/target/release/deps \
         -L dependency=[CWD]/target/release/deps`
@@ -220,6 +221,7 @@ fn top_level_overrides_deps() {
         --emit=[..]link \
         -C opt-level=1[..]\
         -C debuginfo=2 \
+        --remap-path-prefix [..] \
         -C metadata=[..] \
         --out-dir [..] \
         -L dependency=[CWD]/target/release/deps \

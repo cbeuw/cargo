@@ -434,6 +434,7 @@ pub struct TomlProfile {
     pub codegen_units: Option<u32>,
     pub debug: Option<U32OrBool>,
     pub split_debuginfo: Option<String>,
+    pub trim_path: Option<bool>,
     pub debug_assertions: Option<bool>,
     pub rpath: Option<bool>,
     pub panic: Option<String>,
@@ -638,6 +639,10 @@ impl TomlProfile {
 
         if let Some(v) = &profile.split_debuginfo {
             self.split_debuginfo = Some(v.clone());
+        }
+
+        if let Some(v) = profile.trim_path {
+            self.trim_path = Some(v);
         }
 
         if let Some(v) = profile.rpath {

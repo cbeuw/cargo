@@ -588,6 +588,9 @@ fn merge_profile(profile: &mut Profile, toml: &TomlProfile) {
     if let Some(split_debuginfo) = &toml.split_debuginfo {
         profile.split_debuginfo = Some(InternedString::new(split_debuginfo));
     }
+    if let Some(trim_path) = toml.trim_path {
+        profile.trim_path = trim_path
+    }
     if let Some(rpath) = toml.rpath {
         profile.rpath = rpath;
     }
@@ -637,6 +640,7 @@ pub struct Profile {
     pub codegen_units: Option<u32>,
     pub debuginfo: Option<u32>,
     pub split_debuginfo: Option<InternedString>,
+    pub trim_path: bool,
     pub debug_assertions: bool,
     pub overflow_checks: bool,
     pub rpath: bool,
@@ -656,6 +660,7 @@ impl Default for Profile {
             debuginfo: None,
             debug_assertions: false,
             split_debuginfo: None,
+            trim_path: false,
             overflow_checks: false,
             rpath: false,
             incremental: false,
@@ -681,6 +686,7 @@ compact_debug! {
                 codegen_units
                 debuginfo
                 split_debuginfo
+                trim_path
                 debug_assertions
                 overflow_checks
                 rpath
@@ -731,6 +737,7 @@ impl Profile {
             name: InternedString::new("release"),
             root: ProfileRoot::Release,
             opt_level: InternedString::new("3"),
+            trim_path: true,
             ..Profile::default()
         }
     }
@@ -768,6 +775,7 @@ impl Profile {
             self.codegen_units,
             self.debuginfo,
             self.split_debuginfo,
+            self.trim_path,
             self.debug_assertions,
             self.overflow_checks,
             self.rpath,

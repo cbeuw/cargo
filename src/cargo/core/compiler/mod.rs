@@ -780,6 +780,7 @@ fn build_base_args(
         debuginfo,
         debug_assertions,
         split_debuginfo,
+        trim_path,
         overflow_checks,
         rpath,
         ref panic,
@@ -846,6 +847,23 @@ fn build_base_args(
 
     if let Some(debuginfo) = debuginfo {
         cmd.arg("-C").arg(format!("debuginfo={}", debuginfo));
+    }
+
+    if trim_path && unit.mode == CompileMode::Build {
+        let working_dir = bcx.config.cwd();
+        let pkg_root = unit.pkg.root();
+
+        if pkg_root.starts_with(working_dir) {
+            cmd.arg("--remap-path-prefix")
+                .arg(format!("{}=.", working_dir.to_string_lossy()));
+        } else {
+            cmd.arg("--remap-path-prefix").arg(format!(
+                "{}={}-{}",
+                pkg_root.to_string_lossy(),
+                unit.pkg.name(),
+                unit.pkg.version()
+            ));
+        }
     }
 
     if let Some(args) = cx.bcx.extra_args_for(unit) {

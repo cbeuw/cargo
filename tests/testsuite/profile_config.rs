@@ -216,6 +216,7 @@ fn profile_config_all_options() {
             debug = true
             debug-assertions = true
             overflow-checks = false
+            trim_path = true
             rpath = true
             lto = true
             codegen-units = 2
@@ -236,6 +237,8 @@ fn profile_config_all_options() {
             -C lto[..]\
             -C codegen-units=2 \
             -C debuginfo=2 \
+            --remap-path-prefix [..] \
+            --remap-path-prefix [..] \
             -C debug-assertions=on \
             -C overflow-checks=off [..]\
             -C rpath [..]\
